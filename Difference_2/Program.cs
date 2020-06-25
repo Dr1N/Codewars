@@ -18,6 +18,8 @@ namespace Difference_2
             var r3 = Calculation(t2);
             var r4 = Calculation(t3);
             var r5 = Calculation(t4);
+
+            Console.ReadKey(true);
         }
 
         private static (int, int)[] Calculation(int[] array)
