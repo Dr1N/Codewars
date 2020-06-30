@@ -64,11 +64,10 @@ namespace ValidBraces
             return true;
         }
 
-        private static bool Process(Stack<bool> stack, char value)
+        private static void Process(Stack<bool> stack, char val)
         {
-            var result = true;
-
-            return result;
+            var push = new[] { '(', '{', '[' };
+            var pop = new[] { ')', '}', ']' };
         }
     }
 }
