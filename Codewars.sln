@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SplitStrings", "SplitString
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacBoard", "TicTacBoard\TicTacBoard.csproj", "{7DC33BDF-323A-4F03-B444-0680CCFE8A2A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidBraces", "ValidBraces\ValidBraces.csproj", "{EBEB737D-B876-4B73-BFA6-08559149813E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{7DC33BDF-323A-4F03-B444-0680CCFE8A2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7DC33BDF-323A-4F03-B444-0680CCFE8A2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7DC33BDF-323A-4F03-B444-0680CCFE8A2A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EBEB737D-B876-4B73-BFA6-08559149813E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EBEB737D-B876-4B73-BFA6-08559149813E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EBEB737D-B876-4B73-BFA6-08559149813E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EBEB737D-B876-4B73-BFA6-08559149813E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
