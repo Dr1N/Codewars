@@ -29,6 +29,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValidBraces", "ValidBraces\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HighestScoringWord", "HighestScoringWord\HighestScoringWord.csproj", "{BF902C5A-BA95-4D4D-885C-8B7D042C5CCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectFour", "ConnectFour\ConnectFour.csproj", "{B0D646C3-1DCD-4D2D-9428-22B984447D5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectFourTest", "ConnectFourTest\ConnectFourTest.csproj", "{6A357462-8B75-4CDB-97E8-711327CC917C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +91,14 @@ Global
 		{BF902C5A-BA95-4D4D-885C-8B7D042C5CCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BF902C5A-BA95-4D4D-885C-8B7D042C5CCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BF902C5A-BA95-4D4D-885C-8B7D042C5CCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0D646C3-1DCD-4D2D-9428-22B984447D5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0D646C3-1DCD-4D2D-9428-22B984447D5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0D646C3-1DCD-4D2D-9428-22B984447D5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0D646C3-1DCD-4D2D-9428-22B984447D5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6A357462-8B75-4CDB-97E8-711327CC917C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6A357462-8B75-4CDB-97E8-711327CC917C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6A357462-8B75-4CDB-97E8-711327CC917C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6A357462-8B75-4CDB-97E8-711327CC917C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
