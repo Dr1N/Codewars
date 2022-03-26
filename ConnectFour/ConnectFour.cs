@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace ConnectFour
 {
@@ -8,6 +9,10 @@ namespace ConnectFour
         private const int Width = 7;
         private const int Height = 6;
         private const int LineLength = 4;
+        private const string Red = "Red";
+        private const string Yellow = "Yellow";
+        private const string Draw = "Draw";
+        
         private static readonly Dictionary<string, int> ColumnIndexes = new()
         {
             {"A", 0 },
@@ -27,7 +32,12 @@ namespace ConnectFour
 
             return result;
         }
-
+        
+        /// <summary>
+        /// Generate game board by pieces history
+        /// </summary>
+        /// <param name="piecesPositionList">Pieces history. Format ColumnName_Color (for example A_Red, G_Yellow)</param>
+        /// <returns>Matrix with current game state</returns>
         private static string[,] GenerateGameBoard(List<string> piecesPositionList)
         {
             var result = new string[Height, Width];
@@ -44,6 +54,13 @@ namespace ConnectFour
             return result;
         }
 
+        /// <summary>
+        /// Get first free cell in column
+        /// </summary>
+        /// <param name="board">Game board <see cref="GenerateGameBoard"/></param>
+        /// <param name="col">Current column</param>
+        /// <returns>Index of free cell in col</returns>
+        /// <exception cref="ArgumentException">If no free cell in column</exception>
         private static int GetFreeCellInColumn(string[,] board, int col)
         {
             for (var row = Height - 1; row >= 0; row--)
@@ -58,6 +75,11 @@ namespace ConnectFour
             throw new ArgumentException("Invalid column index");
         }
 
+        /// <summary>
+        /// Generate all possible lines from board
+        /// </summary>
+        /// <param name="board">Game board</param>
+        /// <returns>List of lines</returns>
         private static List<List<string>> GetAvailableLinesFromBoard(string[,] board)
         {
             var result = new List<List<string>>();
@@ -66,15 +88,28 @@ namespace ConnectFour
                 for (var col = 0; col < Width; col++)
                 {
                     var horizontalLine = GetHorizontalLine(board, row, col);
-                    if (horizontalLine.Count > 0)
-                    {
-                        result.Add(horizontalLine);
-                    }
+                    var verticalLine = GetVerticalLine(board, row, col);
+                    var mainDiagonal = GetMainDiagonalLine(board, row, col);
+                    var secondDiagonal = GetSecondDiagonalLine(board, row, col);
+                    result.Add(horizontalLine);
+                    result.Add(verticalLine);
+                    result.Add(mainDiagonal);
+                    result.Add(secondDiagonal);
                 }
             }
-            return result;
+            
+            return result
+                .Where(e => e.Count > 0)
+                .ToList();
         }
         
+        /// <summary>
+        /// Get horizontal line for cell
+        /// </summary>
+        /// <param name="board">Game board</param>
+        /// <param name="targetRow">Cell row index</param>
+        /// <param name="targetCol">Cell column index</param>
+        /// <returns>List of horizontal line values</returns>
         private static List<string> GetHorizontalLine(string[,] board, int targetRow, int targetCol)
         {
             var result = new List<string>(4);
@@ -90,10 +125,108 @@ namespace ConnectFour
             
             return result;
         }
-        
-        private static string GetResultFromLines(List<List<string>> lines)
+
+        /// <summary>
+        /// Get vertical line for cell
+        /// </summary>
+        /// <param name="board">Game board</param>
+        /// <param name="targetRow">Cell row index</param>
+        /// <param name="targetCol">Cell column index</param>
+        /// <returns>List of vertical line values</returns>
+        private static List<string> GetVerticalLine(string[,] board, int targetRow, int targetCol)
         {
-            return string.Empty;
+            var result = new List<string>(4);
+            if (targetRow + LineLength > Height)
+            {
+                return result;
+            }
+
+            for (var step = 0; step < LineLength; step++)
+            {
+                result.Add(board[targetRow + step, targetCol]);
+            }
+            
+            return result;
+        }
+
+        /// <summary>
+        /// Get main diagonal line for cell
+        /// </summary>
+        /// <param name="board">Game board</param>
+        /// <param name="targetRow">Cell row index</param>
+        /// <param name="targetCol">Cell column index</param>
+        /// <returns>List of main diagonal line values</returns>
+        private static List<string> GetMainDiagonalLine(string[,] board, int targetRow, int targetCol)
+        {
+            var result = new List<string>(4);
+            if (targetCol + LineLength > Width || targetRow + LineLength > Height)
+            {
+                return result;
+            }
+
+            for (var step = 0; step < LineLength; step++)
+            {
+                result.Add(board[targetRow + step, targetCol + step]);
+            }
+            
+            return result;
+        }
+        
+        /// <summary>
+        /// Get second diagonal line for cell
+        /// </summary>
+        /// <param name="board">Game board</param>
+        /// <param name="targetRow">Cell row index</param>
+        /// <param name="targetCol">Cell column index</param>
+        /// <returns>List of second diagonal line values</returns>
+        private static List<string> GetSecondDiagonalLine(string[,] board, int targetRow, int targetCol)
+        {
+            var result = new List<string>(4);
+            if (targetCol + 1 - LineLength < 0 || targetRow + LineLength > Height)
+            {
+                return result;
+            }
+
+            for (var step = 0; step < LineLength; step++)
+            {
+                result.Add(board[targetRow + step, targetCol - step]);
+            }
+            
+            return result;
+        }
+        
+        /// <summary>
+        /// Get game result
+        /// </summary>
+        /// <param name="lines">All lines for analyze</param>
+        /// <returns>Winner color or "Draw"</returns>
+        private static string GetResultFromLines(IReadOnlyCollection<List<string>> lines)
+        {
+            if (lines.Count == 0)
+            {
+                return Draw;
+            }
+
+            var isRed = lines.Any(e =>
+                e.All(x => x == Red));
+
+            var isYellow = lines.Any(e =>
+                e.All(x => x == Red));
+
+            if (isRed && isYellow)
+            {
+                return Draw;
+            }
+            else if (isRed)
+            {
+                return Red;
+            }
+            else if (isYellow)
+            {
+                return Yellow;
+            }
+
+            return Draw;
         }
     }
 }
