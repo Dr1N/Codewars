@@ -5,6 +5,9 @@ namespace ConnectFour
 {
     public static class ConnectFour
     {
+        private const int Width = 7;
+        private const int Height = 6;
+        private const int LineLength = 4;
         private static readonly Dictionary<string, int> ColumnIndexes = new()
         {
             {"A", 0 },
@@ -27,44 +30,70 @@ namespace ConnectFour
 
         private static string[,] GenerateGameBoard(List<string> piecesPositionList)
         {
-            var result = new string[7, 6];
+            var result = new string[Height, Width];
             foreach (var element in piecesPositionList)
             {
                 var parts = element.Split("_");
-                var row = parts[0];
+                var colName = parts[0];
                 var color = parts[1];
-                var rowIndex = ColumnIndexes[row];
-                var colIndex = GetFreeCellInColumn(result, rowIndex);
+                var colIndex = ColumnIndexes[colName];
+                var rowIndex = GetFreeCellInColumn(result, colIndex);
                 result[rowIndex, colIndex] = color;
             }
             
             return result;
         }
 
-        private static List<List<string>> GetAvailableLinesFromBoard(string[,] board)
+        private static int GetFreeCellInColumn(string[,] board, int col)
         {
-            var result = new List<List<string>>();
-
-            return result;
-        }
-
-        private static string GetResultFromLines(List<List<string>> lines)
-        {
-            return string.Empty;
-        }
-
-        private static int GetFreeCellInColumn(string[,] board, int row)
-        {
-            for (var y = 5; y >= 0; y--)
+            for (var row = Height - 1; row >= 0; row--)
             {
-                var cell = board[row, y];
+                var cell = board[row, col];
                 if (string.IsNullOrEmpty(cell))
                 {
-                    return y;
+                    return row;
                 }
             }
 
             throw new ArgumentException("Invalid column index");
-        } 
+        }
+
+        private static List<List<string>> GetAvailableLinesFromBoard(string[,] board)
+        {
+            var result = new List<List<string>>();
+            for (var row = 0; row < Height; row++)
+            {
+                for (var col = 0; col < Width; col++)
+                {
+                    var horizontalLine = GetHorizontalLine(board, row, col);
+                    if (horizontalLine.Count > 0)
+                    {
+                        result.Add(horizontalLine);
+                    }
+                }
+            }
+            return result;
+        }
+        
+        private static List<string> GetHorizontalLine(string[,] board, int targetRow, int targetCol)
+        {
+            var result = new List<string>(4);
+            if (targetCol + LineLength > Width)
+            {
+                return result;
+            }
+
+            for (var step = 0; step < LineLength; step++)
+            {
+                result.Add(board[targetRow, targetCol + step]);
+            }
+            
+            return result;
+        }
+        
+        private static string GetResultFromLines(List<List<string>> lines)
+        {
+            return string.Empty;
+        }
     }
 }
