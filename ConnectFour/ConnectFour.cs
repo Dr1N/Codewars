@@ -13,7 +13,7 @@ namespace ConnectFour
         private const string Yellow = "Yellow";
         private const string Draw = "Draw";
         
-        private static readonly Dictionary<string, int> ColumnIndexes = new()
+        private static readonly Dictionary<string, int> ColumnIndexes = new Dictionary<string, int>()
         {
             {"A", 0 },
             {"B", 1 },
@@ -28,11 +28,12 @@ namespace ConnectFour
         {
             var board = GenerateGameBoard(piecesPositionList);
             var lines = GetAvailableLinesFromBoard(board);
-            var result = GetResultFromLines(lines);
+            var firstPlayerColor = GetFirstPlayerColor(piecesPositionList);
+            var result = GetResultFromLines(lines, firstPlayerColor);
 
             return result;
         }
-        
+
         /// <summary>
         /// Generate game board by pieces history
         /// </summary>
@@ -209,33 +210,47 @@ namespace ConnectFour
         }
         
         /// <summary>
+        /// Get first player color
+        /// </summary>
+        /// <param name="piecesPositionList">History of pieces</param>
+        /// <returns>Color</returns>
+        private static string GetFirstPlayerColor(List<string> piecesPositionList)
+        {
+            var firstPices = piecesPositionList.First();
+            var parts = firstPices.Split("_");
+
+            return parts[1];
+        }
+
+        /// <summary>
         /// Get game result
         /// </summary>
         /// <param name="lines">All lines for analyze</param>
+        /// <param name="firstColor">First player color</param>
         /// <returns>Winner color or "Draw"</returns>
-        private static string GetResultFromLines(IReadOnlyCollection<List<string>> lines)
+        private static string GetResultFromLines(IReadOnlyCollection<List<string>> lines, string firstColor)
         {
-            if (lines.Count == 0)
-            {
-                return Draw;
-            }
-
             var isRed = lines.Any(e =>
                 e.All(x => x == Red));
+
+            var isYellow = lines.Any(e =>
+                e.All(x => x == Yellow));
+
+            if (isRed && isYellow)
+            {
+                return firstColor;
+            }
 
             if (isRed)
             {
                 return Red;
             }
-            
-            var isYellow = lines.Any(e =>
-                e.All(x => x == Yellow));
 
             if (isYellow)
             {
                 return Yellow;
             }
-
+            
             return Draw;
         }
     }
