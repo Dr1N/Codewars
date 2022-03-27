@@ -12,6 +12,8 @@ namespace ConnectFour
         private const string Red = "Red";
         private const string Yellow = "Yellow";
         private const string Draw = "Draw";
+        private const string Game = "Game";
+        private const string Separator = "_";
         
         private static readonly Dictionary<string, int> ColumnIndexes = new Dictionary<string, int>()
         {
@@ -26,42 +28,35 @@ namespace ConnectFour
 
         public static string WhoIsWinner(List<string> piecesPositionList)
         {
-            var board = GenerateGameBoard(piecesPositionList);
-            var lines = GetAvailableLinesFromBoard(board);
-            var firstPlayerColor = GetFirstPlayerColor(piecesPositionList);
-            var result = GetResultFromLines(lines, firstPlayerColor);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Generate game board by pieces history
-        /// </summary>
-        /// <param name="piecesPositionList">Pieces history. Format ColumnName_Color (for example A_Red, G_Yellow)</param>
-        /// <returns>Matrix with current game state</returns>
-        private static string[,] GenerateGameBoard(List<string> piecesPositionList)
-        {
-            var result = new string[Height, Width];
-            foreach (var element in piecesPositionList)
+            var board = new string[Height, Width];
+            foreach (var piece in piecesPositionList)
             {
-                var parts = element.Split("_");
-                var colName = parts[0];
-                var color = parts[1];
-                var colIndex = ColumnIndexes[colName];
-                var rowIndex = GetFreeCellInColumn(result, colIndex);
-                result[rowIndex, colIndex] = color;
+                var result = Game;
+                AddPieceToBoard(board, piece);
+                var lines = GetFilledLinesFromAvailableLinesFromBoard(board);
+                if (lines.Count > 0)
+                {
+                    result = GetResultFromLines(lines);
+                }
+                if (result != Game)
+                {
+                    return result;
+                }
             }
-            
-            return result;
+
+            return Draw;
         }
 
-        /// <summary>
-        /// Get first free cell in column
-        /// </summary>
-        /// <param name="board">Game board <see cref="GenerateGameBoard"/></param>
-        /// <param name="col">Current column</param>
-        /// <returns>Index of free cell in col</returns>
-        /// <exception cref="ArgumentException">If no free cell in column</exception>
+        private static void AddPieceToBoard(string[,] board, string piece)
+        {
+            var parts = piece.Split("_");
+            var colName = parts[0];
+            var color = parts[1];
+            var colIndex = ColumnIndexes[colName];
+            var rowIndex = GetFreeCellInColumn(board, colIndex);
+            board[rowIndex, colIndex] = color;
+        }
+
         private static int GetFreeCellInColumn(string[,] board, int col)
         {
             for (var row = Height - 1; row >= 0; row--)
@@ -76,12 +71,7 @@ namespace ConnectFour
             throw new ArgumentException("Invalid column index");
         }
 
-        /// <summary>
-        /// Generate all possible lines from board
-        /// </summary>
-        /// <param name="board">Game board</param>
-        /// <returns>List of lines</returns>
-        private static List<List<string>> GetAvailableLinesFromBoard(string[,] board)
+        private static List<List<string>> GetFilledLinesFromAvailableLinesFromBoard(string[,] board)
         {
             var result = new List<List<string>>();
             for (var row = 0; row < Height; row++)
@@ -92,22 +82,22 @@ namespace ConnectFour
                     var verticalLine = GetVerticalLine(board, row, col);
                     var mainDiagonal = GetMainDiagonalLine(board, row, col);
                     var secondDiagonal = GetSecondDiagonalLine(board, row, col);
-                    if (horizontalLine.Count > 0)
+                    if (horizontalLine.Count > 0 && horizontalLine.All(e => e != null))
                     {
                         result.Add(horizontalLine);
                     }
 
-                    if (verticalLine.Count > 0)
+                    if (verticalLine.Count > 0 && verticalLine.All(e => e != null))
                     {
                         result.Add(verticalLine);
                     }
 
-                    if (mainDiagonal.Count > 0)
+                    if (mainDiagonal.Count > 0 && mainDiagonal.All(e => e != null))
                     {
                         result.Add(mainDiagonal);
                     }
 
-                    if (secondDiagonal.Count > 0)
+                    if (secondDiagonal.Count > 0 && secondDiagonal.All(e => e != null))
                     {
                         result.Add(secondDiagonal);
                     }
@@ -117,13 +107,6 @@ namespace ConnectFour
             return result;
         }
         
-        /// <summary>
-        /// Get horizontal line for cell
-        /// </summary>
-        /// <param name="board">Game board</param>
-        /// <param name="targetRow">Cell row index</param>
-        /// <param name="targetCol">Cell column index</param>
-        /// <returns>List of horizontal line values or empty list</returns>
         private static List<string> GetHorizontalLine(string[,] board, int targetRow, int targetCol)
         {
             var result = new List<string>(4);
@@ -140,13 +123,6 @@ namespace ConnectFour
             return result;
         }
 
-        /// <summary>
-        /// Get vertical line for cell
-        /// </summary>
-        /// <param name="board">Game board</param>
-        /// <param name="targetRow">Cell row index</param>
-        /// <param name="targetCol">Cell column index</param>
-        /// <returns>List of vertical line values or empty list</returns>
         private static List<string> GetVerticalLine(string[,] board, int targetRow, int targetCol)
         {
             var result = new List<string>(4);
@@ -163,13 +139,6 @@ namespace ConnectFour
             return result;
         }
 
-        /// <summary>
-        /// Get main diagonal line for cell
-        /// </summary>
-        /// <param name="board">Game board</param>
-        /// <param name="targetRow">Cell row index</param>
-        /// <param name="targetCol">Cell column index</param>
-        /// <returns>List of main diagonal line values or empty list</returns>
         private static List<string> GetMainDiagonalLine(string[,] board, int targetRow, int targetCol)
         {
             var result = new List<string>(4);
@@ -186,13 +155,6 @@ namespace ConnectFour
             return result;
         }
         
-        /// <summary>
-        /// Get second diagonal line for cell
-        /// </summary>
-        /// <param name="board">Game board</param>
-        /// <param name="targetRow">Cell row index</param>
-        /// <param name="targetCol">Cell column index</param>
-        /// <returns>List of second diagonal line values or empty list</returns>
         private static List<string> GetSecondDiagonalLine(string[,] board, int targetRow, int targetCol)
         {
             var result = new List<string>(4);
@@ -209,49 +171,25 @@ namespace ConnectFour
             return result;
         }
         
-        /// <summary>
-        /// Get first player color
-        /// </summary>
-        /// <param name="piecesPositionList">History of pieces</param>
-        /// <returns>Color</returns>
-        private static string GetFirstPlayerColor(List<string> piecesPositionList)
-        {
-            var firstPices = piecesPositionList.First();
-            var parts = firstPices.Split("_");
-
-            return parts[1];
-        }
-
-        /// <summary>
-        /// Get game result
-        /// </summary>
-        /// <param name="lines">All lines for analyze</param>
-        /// <param name="firstColor">First player color</param>
-        /// <returns>Winner color or "Draw"</returns>
-        private static string GetResultFromLines(IReadOnlyCollection<List<string>> lines, string firstColor)
+        private static string GetResultFromLines(IReadOnlyCollection<List<string>> lines)
         {
             var isRed = lines.Any(e =>
                 e.All(x => x == Red));
-
-            var isYellow = lines.Any(e =>
-                e.All(x => x == Yellow));
-
-            if (isRed && isYellow)
-            {
-                return firstColor;
-            }
 
             if (isRed)
             {
                 return Red;
             }
+            
+            var isYellow = lines.Any(e =>
+                e.All(x => x == Yellow));
 
             if (isYellow)
             {
                 return Yellow;
             }
             
-            return Draw;
+            return Game;
         }
     }
 }
