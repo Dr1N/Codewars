@@ -91,16 +91,29 @@ namespace ConnectFour
                     var verticalLine = GetVerticalLine(board, row, col);
                     var mainDiagonal = GetMainDiagonalLine(board, row, col);
                     var secondDiagonal = GetSecondDiagonalLine(board, row, col);
-                    result.Add(horizontalLine);
-                    result.Add(verticalLine);
-                    result.Add(mainDiagonal);
-                    result.Add(secondDiagonal);
+                    if (horizontalLine.Count > 0)
+                    {
+                        result.Add(horizontalLine);
+                    }
+
+                    if (verticalLine.Count > 0)
+                    {
+                        result.Add(verticalLine);
+                    }
+
+                    if (mainDiagonal.Count > 0)
+                    {
+                        result.Add(mainDiagonal);
+                    }
+
+                    if (secondDiagonal.Count > 0)
+                    {
+                        result.Add(secondDiagonal);
+                    }
                 }
             }
             
-            return result
-                .Where(e => e.Count > 0)
-                .ToList();
+            return result;
         }
         
         /// <summary>
@@ -109,7 +122,7 @@ namespace ConnectFour
         /// <param name="board">Game board</param>
         /// <param name="targetRow">Cell row index</param>
         /// <param name="targetCol">Cell column index</param>
-        /// <returns>List of horizontal line values</returns>
+        /// <returns>List of horizontal line values or empty list</returns>
         private static List<string> GetHorizontalLine(string[,] board, int targetRow, int targetCol)
         {
             var result = new List<string>(4);
@@ -132,7 +145,7 @@ namespace ConnectFour
         /// <param name="board">Game board</param>
         /// <param name="targetRow">Cell row index</param>
         /// <param name="targetCol">Cell column index</param>
-        /// <returns>List of vertical line values</returns>
+        /// <returns>List of vertical line values or empty list</returns>
         private static List<string> GetVerticalLine(string[,] board, int targetRow, int targetCol)
         {
             var result = new List<string>(4);
@@ -155,7 +168,7 @@ namespace ConnectFour
         /// <param name="board">Game board</param>
         /// <param name="targetRow">Cell row index</param>
         /// <param name="targetCol">Cell column index</param>
-        /// <returns>List of main diagonal line values</returns>
+        /// <returns>List of main diagonal line values or empty list</returns>
         private static List<string> GetMainDiagonalLine(string[,] board, int targetRow, int targetCol)
         {
             var result = new List<string>(4);
@@ -178,7 +191,7 @@ namespace ConnectFour
         /// <param name="board">Game board</param>
         /// <param name="targetRow">Cell row index</param>
         /// <param name="targetCol">Cell column index</param>
-        /// <returns>List of second diagonal line values</returns>
+        /// <returns>List of second diagonal line values or empty list</returns>
         private static List<string> GetSecondDiagonalLine(string[,] board, int targetRow, int targetCol)
         {
             var result = new List<string>(4);
@@ -210,18 +223,15 @@ namespace ConnectFour
             var isRed = lines.Any(e =>
                 e.All(x => x == Red));
 
-            var isYellow = lines.Any(e =>
-                e.All(x => x == Red));
-
-            if (isRed && isYellow)
-            {
-                return Draw;
-            }
-            else if (isRed)
+            if (isRed)
             {
                 return Red;
             }
-            else if (isYellow)
+            
+            var isYellow = lines.Any(e =>
+                e.All(x => x == Yellow));
+
+            if (isYellow)
             {
                 return Yellow;
             }
