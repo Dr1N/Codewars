@@ -49,7 +49,7 @@ namespace ConnectFour
 
         private static void AddPieceToBoard(string[,] board, string piece)
         {
-            var parts = piece.Split("_");
+            var parts = piece.Split(Separator);
             var colName = parts[0];
             var color = parts[1];
             var colIndex = ColumnIndexes[colName];
