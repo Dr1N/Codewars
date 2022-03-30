@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectFourTest", "ConnectF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Friday13ths", "Friday13ths\Friday13ths.csproj", "{E9D743D1-1F5F-4CDE-B4CA-6174C00AA29B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rainfall", "Rainfall\Rainfall.csproj", "{93AEA04C-0E10-4625-8E9D-2623BBBE4E70}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -105,6 +107,10 @@ Global
 		{E9D743D1-1F5F-4CDE-B4CA-6174C00AA29B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9D743D1-1F5F-4CDE-B4CA-6174C00AA29B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9D743D1-1F5F-4CDE-B4CA-6174C00AA29B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93AEA04C-0E10-4625-8E9D-2623BBBE4E70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93AEA04C-0E10-4625-8E9D-2623BBBE4E70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93AEA04C-0E10-4625-8E9D-2623BBBE4E70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93AEA04C-0E10-4625-8E9D-2623BBBE4E70}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
